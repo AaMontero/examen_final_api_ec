@@ -1,14 +1,6 @@
 package com.uce.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +14,6 @@ import com.uce.repository.model.Vuelo;
 import com.uce.service.IClienteService;
 import com.uce.service.ICompraPasajeService;
 import com.uce.service.IVueloService;
-import com.uce.service.to.CompraPasajeTo;
 @RestController
 @RequestMapping("/comprarPasaje")
 @CrossOrigin("http://localhost:8080/")
@@ -62,19 +53,7 @@ public class CompraPasajeRestFulController {
 		
 	}
 	
-	@GetMapping(path ="/vuelosHoy/{fecha}", produces = MediaType.APPLICATION_JSON_VALUE)
-	private List<CompraPasajeTo> buscarVentasHoy(@PathParam ("fecha")String fecha){
-		List<CompraPasajeTo> lista = this.copaService.buscarVentasHoy(fecha);
-		//Metodo que agrege links a cliente y vuelo
-		for(CompraPasajeTo CpTo: lista) {
-			Link myLink = linkTo(methodOn(CompraPasajeRestFulController.class).buscarCliente(CpTo.getId())).withRel("Cliente");
-			Link myLink2 = linkTo(methodOn(CompraPasajeRestFulController.class).buscarVuelo(CpTo.getId())).withRel("Vuelo");
-			CpTo.add(myLink); 
-			CpTo.add(myLink2); 
-		}
-		return lista; 
-		
-	}
+
 	@GetMapping(path ="/{idPasaje}/cliente")
 	private Cliente buscarCliente(@PathVariable("idPasaje") Integer id) {
 		return this.clienteServ.buscar(id); 

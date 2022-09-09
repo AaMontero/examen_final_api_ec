@@ -15,6 +15,7 @@ import com.uce.service.to.VueloTo;
 @RequestMapping("/vuelos")
 @CrossOrigin("http://localhost:8080/")
 public class VuelosRestFulController {
+	
 	@Autowired
 	private IVueloService vuelosServ;
 	
@@ -37,7 +38,9 @@ public class VuelosRestFulController {
 	
 	@GetMapping(path="/Disponible/{numero}")
 	private boolean estaDisponible(@PathVariable Integer numero) {
-		return (this.vuelosServ.buscarPorNumero(numero).getEstado()=="Disponible (D)"); 
+		System.out.println(this.vuelosServ.buscarPorNumero(numero).getEstado());
+		return (this.vuelosServ.buscarPorNumero(numero).getEstado().equals("Disponible"));
+		
 	}
 	
 	
